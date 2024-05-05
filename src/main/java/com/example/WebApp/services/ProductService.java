@@ -16,8 +16,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
 
-    public List<Product> listProduct(String title){
-        if (title != null) productRepository.findByTitle(title);
+    public List<Product> listProduct(String name){
+        if (name != null) productRepository.findByName(name);
 
         return productRepository.findAll();
     }
@@ -26,13 +26,22 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void deleteProduct(long ID){
-        productRepository.deleteById(ID);
+//    public void deleteProduct(long id){
+//        productRepository.deleteById(id);
+//    }
+
+//    public Product getProductById(Long id){
+//        return productRepository.findById(id).orElse(null);
+//    }
+
+    public List<String> ModelNames(){
+        return productRepository.findDistinctName();
     }
 
-    public Product getProductById(Long id){
-        return productRepository.findById(id).orElse(null);
+    public List<Product> EpochsOfModel(String name){
+        return productRepository.findAllByName(name);
     }
+
 
 
 }

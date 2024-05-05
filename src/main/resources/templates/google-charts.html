@@ -21,7 +21,7 @@
     var real_data = /*[[${chartData}]]*/'noValue';
     $(document).ready(function() {
         google.charts.load('current', {
-            packages : [ 'corechart', 'bar', 'line' ]
+            packages : [ 'chart_div',  'piechart', 'Line_chart' ]
         });
         google.charts.setOnLoadCallback(drawColumnChart);
         google.charts.setOnLoadCallback(drawPieChart);
@@ -66,9 +66,6 @@
                 }
             }
         };
-        // var chart = new google.visualization.Line(document
-        //     .getElementById('Line_chart'));
-        // chart.draw(data, options);
         var chart = new google.visualization.LineChart(document.getElementById('Line_chart'));
         chart.draw(data, google.charts.Line.convertOptions(options));
     }

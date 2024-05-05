@@ -5,21 +5,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Table(name = "graph")
+@Table(name = "model_data")
 @Data
 @AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
-    private long ID;
-    @Column(name = "x")
-    private double x;
-    @Column(name = "y")
-    private double y;
+    @Column(name = "id")
+    private long id;
+    @Column(name = "train_loss")
+    private double train_loss;
+    @Column(name = "val_loss")
+    private double val_loss;
+    @Column(name = "mae_train")
+    private double mae_train;
+    @Column(name = "mae_eval")
+    private double mae_eval;
+    @Column(name = "epoch")
+    private int epoch;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "title")
-    private String title;
 
 
     public Product() {

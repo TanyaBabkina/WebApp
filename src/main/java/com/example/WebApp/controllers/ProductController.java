@@ -22,20 +22,14 @@ public class ProductController {
     @GetMapping("/")
     // Возвращает название html файла
     // model - передаёт данные в html
-    public String products(@RequestParam(name = "title", required = false) String title, Model model){
-        model.addAttribute("products", productService.listProduct(title));
+    public String products(@RequestParam(name = "name", required = false) String name, Model model){
+        model.addAttribute("products", productService.ModelNames());
         return "products";
     }
 
-    @PostMapping("/product/create")
-    public String createProduct(Product product){
-        productService.saveProduct(product);
-        return "redirect:/";
-    }
-
-    @GetMapping("/testModel/{ID}")
-    public String testModel(@PathVariable Long ID, Model model) {
-        model.addAttribute("products", productService.getProductById(ID));
+    @GetMapping("/testModel/{name}")
+    public String testModel(@PathVariable String name, Model model) {
+        model.addAttribute("products", productService.EpochsOfModel(name));
         return "testModel";
     }
 
