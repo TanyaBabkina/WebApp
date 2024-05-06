@@ -4,7 +4,14 @@ import com.example.WebApp.models.PredictData;
 import com.example.WebApp.models.Product;
 import com.example.WebApp.models.TestResult;
 import com.example.WebApp.services.ProductService;
-import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -13,19 +20,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.HashMap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class RestApiController {
     private final ProductService productService;
@@ -56,11 +52,11 @@ public class RestApiController {
         }
         return jsonData;
     }
-//    @RequestParam(name = "name", required = false) String name, Model model
+    //    @RequestParam(name = "name", required = false) String name, Model model
     @PostMapping("/api/sendData")
-    public static String SendData(@RequestBody String model_name,
+    public static String SendData(@ModelAttribute String model_name,
                                   String date, double t_air, double atm_dav,
-                                  double wind, double snow_level, double rain, Model model) throws IOException, URISyntaxException {
+                                  double wind, double snow_level, double rain, Model model ) throws IOException, URISyntaxException {
         System.out.println(model_name);
         PredictData predict_data = new PredictData();
         predict_data.setModel_name(model_name);
@@ -89,20 +85,32 @@ public class RestApiController {
         try (DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
             dos.writeBytes(requestBody);
         }
-        String rez = "-----";
+        double rez = 0.0;
         System.out.println("Response code: " + conn.getResponseCode());
 
-        // Read Response from and API
+
+
+
+//        // Read Response from and API
         try (BufferedReader bf = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
             String line;
+
             while ((line = bf.readLine()) != null) {
                 System.out.println(line);
-                rez = line;
+                ObjectMapper mapper = new ObjectMapper();
+                TestResult resp = objectMapper.readValue(line, TestResult.class);
+                rez = resp.getWaterLevel();
             }
         }
+//        InputStream content = (InputStream)conn.getInputStream();
+//        JSONTokener tokener = new JSONTokener(content.toString());
+//        JSONObject json = new JSONObject(tokener);
+//        rez = String.valueOf(json.getJSONObject("waterLevel"));
+//        System.out.println(rez);
 
-//        model.addAttribute("predict", rez);
-        return rez;
+
+        model.addAttribute("rez", rez);
+        return "predict_rez";
     }
 
 

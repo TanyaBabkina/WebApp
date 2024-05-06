@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<head>
-    <title>Урааааа</title>
-</head>
-<#--<body>-->
-<#--<h1>vndkjfnvjkezfvn</h1>-->
-<#--</body>-->
+<html>
+<body>
+
+<h1>Model predict <b>${rez}</b></h1>
+
+</body>
+</html>
