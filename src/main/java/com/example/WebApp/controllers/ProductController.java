@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 @Controller
 @RequiredArgsConstructor
 public class ProductController {
@@ -64,15 +66,52 @@ public class ProductController {
         model.addAttribute("model_name", joinedString);
 
 
-        model.addAttribute("products", productService.ModelNames());
-        return "products.html";
+        model.addAttribute("model_names", joinedString);
+        return "main_page.html";
     }
 
     @GetMapping("/testModel/{name}")
     public String testModel(@PathVariable String name, Model model) {
-        model.addAttribute("products", productService.EpochsOfModel(name));
+
+
+        List<String> list_of_metrics = asList("mae_eval", "mae_train", "val_loss", "train_loss");
+        List<List<Double>> list_values = new ArrayList<>();
+        List<Product> list_model_epochs = productService.EpochsOfModel(name);
+        System.out.println(list_model_epochs+name);
+
+        List<Double> tmp_list_mae_eval = new ArrayList<>();
+        List<Double> tmp_list_mae_train = new ArrayList<>();
+        List<Double> tmp_list_val_loss= new ArrayList<>();
+        List<Double> tmp_list_train_loss = new ArrayList<>();
+
+        for (Product listModelEpoch : list_model_epochs) {
+
+            tmp_list_mae_eval.add(listModelEpoch.getMae_eval());
+            tmp_list_mae_train.add(listModelEpoch.getMae_train());
+            tmp_list_val_loss.add(listModelEpoch.getVal_loss());
+            tmp_list_train_loss.add(listModelEpoch.getTrain_loss());
+        }
+        list_values.add(tmp_list_mae_eval);
+        list_values.add(tmp_list_mae_train);
+        list_values.add(tmp_list_val_loss);
+        list_values.add(tmp_list_train_loss);
+
+
+        System.out.println(list_values);
+        String joinedString = String.join(",", list_of_metrics);
+        System.out.println(joinedString);
+        System.out.println(name+"------------");
+
+
+
+
+        model.addAttribute("list_values", list_values);
+        model.addAttribute("model_name", joinedString);
+        model.addAttribute("name", name);
+
+//        model.addAttribute("products", productService.EpochsOfModel(name));
 //        System.out.println(productService.EpochsOfModel(name).get(1).getE());
-        return "testModel";
+        return "testModel.html";
     }
 
 

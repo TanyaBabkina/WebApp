@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MODEL</title>
+    <title>TestModel</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        var list_values = [[${list_values}]] ;
-        var model_name = "[[${model_name}]]"
-        var modelNameList = model_name.split(",");
+        const list_values = [[${list_values}]];
+        const model_name = "[[${model_name}]]";
+        console.log(list_values);
+        const modelNameList = model_name.split(",");
 
         google.charts.load('current', {'packages':['line']});
         google.charts.setOnLoadCallback(drawChart);
@@ -42,20 +43,34 @@
     </script>
 </head>
 <body>
-<h1>MODEL</h1>
+<h1>MODEL [[${name}]]</h1>
 <hr>
-<h4>Список моделей</h4>
-<div id="linechart" style="width: 900px; height: 500px;"></div>
-<!-- replace with actual model list -->
-<div>
-    <p><b>Model 1</b> <a href="/testModel/Model 1">Подробнее...</a></p>
-</div>
-<div>
-    <p><b>Model 2</b> <a href="/testModel/Model 2">Подробнее...</a></p>
-</div>
-<div>
-    <p><b>Model 3</b> <a href="/testModel/Model 3">Подробнее...</a></p>
-</div>
-<hr>
+<div id="linechart"></div>
+
+<p ALIGN=RIGHT>Отправка данных для теста модели</p>
+<form action="/api/sendData" method="post" ALIGN=RIGHT>
+    Название модели: <label>
+    <input type="text" name="model_name" th:value="${name}"/>
+</label><br><br>
+    Дата: <label>
+    <input type="date" name="date" value = "2024-01-01"/>
+</label><br><br>
+    Температура воздуха: <label>
+    <input type="number" name="t_air" value="-20"/>
+</label><br><br>
+    Атмосферное давление: <label>
+    <input type="number" name="atm_dav" value="178"/>
+</label><br><br>
+    Скорость ветра: <label>
+    <input type="number" name="wind" value="8"/>
+</label><br><br>
+    Толщина снежного покрова: <label>
+    <input type="number" name="snow_level" value="20"/>
+</label><br><br>
+    Количество осадков: <label>
+    <input type="number" name="rain" value="20"/>
+</label><br><br>
+    <input type="submit" value="Отправить" />
+</form>
 </body>
 </html>

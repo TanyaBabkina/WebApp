@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MODEL</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        var list_values = [[${list_values}]] ;
+        var model_name = "[[${model_name}]]"
+        var modelNameList = model_name.split(",");
+
+        google.charts.load('current', {'packages':['line']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'epoch');
+            for (var j = 0; j < modelNameList.length; j++){
+                data.addColumn('number', modelNameList[j]);
+            }
+
+            var epoch_ = 0;
+            for (var i = 0; i < list_values[0].length; i++) {
+                const tmp_list = [];
+                epoch_ = epoch_ + 1;
+                tmp_list.push(epoch_);
+                for (var j = 0; j < list_values.length; j++){
+                    tmp_list.push(list_values[j][i]);
+                }
+                data.addRow(tmp_list);
+            }
+
+            var options = {
+                title: 'Line Chart of mae',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.charts.Line(document.getElementById('linechart'));
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
+    </script>
+</head>
+<body>
+<h1>Product List</h1>
+
+<div id="linechart" style="width: 900px; height: 500px;"></div>
+<ol id="product-list"></ol>
+<script>
+    var model_names = "[[${model_names}]]"
+    var modelNameList = model_names.split(",");
+    var modelDict = {};
+
+    for (var i=0;i<modelNameList.length;i++){
+
+        modelDict[modelNameList[i]] = "/testModel/".concat("", modelNameList[i]);
+    }
+
+    // assume products is an array of objects with 'name' and 'url' properties
+    function displayProducts(modelDict) {
+        const productList = document.getElementById('product-list');
+        for (let key in modelDict) {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `${modelDict[key]}`;
+            link.textContent = `${key}`;
+            listItem.appendChild(link);
+            productList.appendChild(listItem);
+        }
+    }
+
+    displayProducts(modelDict);
+
+</script>
+
+<p ALIGN=RIGHT>Отправка данных для обучения модели</p>
+<form action="/api/sendLearningData" method="post" ALIGN=RIGHT>
+    Название модели: <label>
+    <input type="text" name="model_name" />
+</label><br><br>
+    Код поста: <label>
+    <input type="number" name="post_code" value = "123456789"/>
+</label><br><br>
+    A: <label>
+    <input type="number" step="any" name="a" value="0.1"/>
+</label><br><br>
+    Batch: <label>
+    <input type="number" name="batch" value="178"/>
+</label><br><br>
+    Number of Epochs: <label>
+    <input type="number" name="epochs" value="8"/>
+</label><br><br>
+    HiddenSize: <label>
+    <input type="number" name="hiddenSize" value="20"/>
+</label><br><br>
+    <input type="submit" value="Отправить" />
+</form>
+
+</body>
+</html>
