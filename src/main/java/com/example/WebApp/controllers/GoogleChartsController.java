@@ -1,49 +1,64 @@
 package com.example.WebApp.controllers;
 
+import com.example.WebApp.models.Product;
+import com.example.WebApp.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class GoogleChartsController {
-
+    private final ProductService productService;
     @GetMapping("/chart")
     public String showLineChart(Model model) {
+
 //        List<String> model_names = Arrays.asList("Model_1", "Model_2", "Model_3");
 //        List<Integer> yValues = Arrays.asList(10, 20, 15, 25, 30);
 //        System.out.println(xValues);
 //        model.addAttribute("xValues", xValues);
 //        model.addAttribute("yValues", yValues);
+        List<String> list_of_models = productService.ModelNames();
+
+        String joinedString = String.join(",", list_of_models);
+        System.out.println(joinedString);
+
         String model_names = "Model_1,Model_2,Model_3";
-        // Создаем двумерный список
-        List<List<Integer>> list_values = new ArrayList<>();
 
-        // Добавляем первый внутренний список
-        List<Integer> innerList1 = new ArrayList<>();
-        innerList1.add(1);
-        innerList1.add(2);
-        innerList1.add(3);
-        list_values.add(innerList1);
+        List<List<Double>> list_values_mae = new ArrayList<>();
+        for (String listOfModel : list_of_models) {
+            System.out.println(listOfModel);
+            List<Product> model_metrics = productService.EpochsOfModel(listOfModel);
+            List<Double> mae_list = new ArrayList<>();
+            for (Product modelMetric : model_metrics) {
+                double mae = modelMetric.getMae_eval();
+                mae_list.add(mae);
+            }
+            list_values_mae.add(mae_list);
+        }
+        System.out.println(list_values_mae);
+        int max_inner_list = list_values_mae.stream().mapToInt(List::size).max().getAsInt();
+//        System.out.println(list_values_mae.stream().mapToInt(List::size).max().getAsInt());
 
-        // Добавляем второй внутренний список
-        List<Integer> innerList2 = new ArrayList<>();
-        innerList2.add(4);
-        innerList2.add(5);
-        innerList2.add(6);
-        list_values.add(innerList2);
+        // Сравнять количество элементов в списках
+        for (List<Double> doubles : list_values_mae) {
+            if (doubles.size() < max_inner_list) {
+                while (doubles.size() != max_inner_list) {
+                    doubles.add(null);
+                }
+            }
+        }
+        System.out.println(list_values_mae);
 
-        // Добавляем третий внутренний список
-        List<Integer> innerList3 = new ArrayList<>();
-        innerList3.add(7);
-        innerList3.add(8);
-        innerList3.add(9);
-        list_values.add(innerList3);
-        model.addAttribute("list_values", list_values);
-        model.addAttribute("model_name", model_names);
+        model.addAttribute("list_values", list_values_mae);
+        model.addAttribute("model_name", joinedString);
         return "google-charts";
     }
 }

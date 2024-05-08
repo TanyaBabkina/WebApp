@@ -2,6 +2,7 @@ package com.example.WebApp.services;
 
 import com.example.WebApp.models.Product;
 import com.example.WebApp.repositories.ProductRepository;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,11 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ProductService {
-    private final ProductRepository productRepository;
+    private final ProductRepository productRepository ;
 
 
     public List<Product> listProduct(String name){
         if (name != null) productRepository.findByName(name);
-
         return productRepository.findAll();
     }
     public void saveProduct(Product product){
@@ -26,15 +26,9 @@ public class ProductService {
         productRepository.save(product);
     }
 
-//    public void deleteProduct(long id){
-//        productRepository.deleteById(id);
-//    }
 
-//    public Product getProductById(Long id){
-//        return productRepository.findById(id).orElse(null);
-//    }
 
-    public List<String> ModelNames(){
+    public  List<String> ModelNames(){
         return productRepository.findDistinctName();
     }
 
