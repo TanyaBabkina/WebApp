@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Danfo&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
     <title>MODEL</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        var list_values = [[${list_values}]] ;
+        var list_values = [[${list_values}]];
         var model_name = "[[${model_name}]]"
         var modelNameList = model_name.split(",");
 
-        google.charts.load('current', {'packages':['line']});
+        google.charts.load('current', {'packages': ['line']});
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('number', 'epoch');
-            for (var j = 0; j < modelNameList.length; j++){
+            for (var j = 0; j < modelNameList.length; j++) {
                 data.addColumn('number', modelNameList[j]);
             }
 
@@ -23,7 +28,7 @@
                 const tmp_list = [];
                 epoch_ = epoch_ + 1;
                 tmp_list.push(epoch_);
-                for (var j = 0; j < list_values.length; j++){
+                for (var j = 0; j < list_values.length; j++) {
                     tmp_list.push(list_values[j][i]);
                 }
                 data.addRow(tmp_list);
@@ -32,7 +37,7 @@
             var options = {
                 title: 'Line Chart of mae',
                 curveType: 'function',
-                legend: { position: 'bottom' }
+                legend: {position: 'bottom'}
             };
 
             var chart = new google.charts.Line(document.getElementById('linechart'));
@@ -41,18 +46,13 @@
     </script>
 </head>
 <body>
-<h1>Предсказание уровней воды</h1>
+    <script>
+        var model_names = "[[${model_names}]]"
+        var modelNameList = model_names.split(",");
+        var modelDict = {};
+        for (var i = 0; i < modelNameList.length; i++) {
 
-<div id="linechart" style="width: 900px; height: 500px;"></div>
-<ol id="product-list"></ol>
-<script>
-    var model_names = "[[${model_names}]]"
-    var modelNameList = model_names.split(",");
-    var modelDict = {};
-
-    for (var i=0;i<modelNameList.length;i++){
-
-        modelDict[modelNameList[i]] = "/testModel/".concat("", modelNameList[i]);
+            modelDict[modelNameList[i]] = "/testModel/".concat("", modelNameList[i]);
     }
 
     // assume products is an array of objects with 'name' and 'url' properties
@@ -71,9 +71,10 @@
     displayProducts(modelDict);
 
 </script>
-
-<p ALIGN=RIGHT>Отправка данных для обучения модели</p>
-<form action="/api/sendLearningData" method="post" ALIGN=RIGHT>
+<h1>Product List</h1>
+<hr>
+<p ALIGN=LEFT>Отправка данных для обучения модели</p>
+<form action="/api/sendLearningData" method="post" ALIGN=LEFT>
     Название модели: <label>
     <input type="text" name="model_name" />
 </label><br><br>
@@ -93,7 +94,11 @@
     <input type="number" name="hidden_size" value="20"/>
 </label><br><br>
     <input type="submit" value="Отправить" />
-</form>
 
+</form>
+    <div class="tenor-gif-embed" data-postid="27526592" data-share-method="host" data-aspect-ratio="1" data-width="20%"><a href="https://tenor.com/view/maxwell-gif-27526592">Maxwell Sticker</a>from <a href="https://tenor.com/search/maxwell-stickers">Maxwell Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+<div id="linechart" style="width: 900px; height: 500px;"></div>
+<ol id="product-list"></ol>
+</div>
 </body>
 </html>
