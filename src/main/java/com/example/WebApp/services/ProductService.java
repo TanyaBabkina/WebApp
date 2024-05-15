@@ -17,10 +17,11 @@ public class ProductService {
     private final ProductRepository productRepository ;
 
 
-    public List<Product> listProduct(String name){
-        if (name != null) productRepository.findByName(name);
-        return productRepository.findAll();
-    }
+//    public List<Product> listProduct(String name){
+//        if (name != null) productRepository.findByName(name);
+//        return productRepository.findAll();
+//    }
+
     public void saveProduct(Product product){
         log.info("Saving new {}", product);
         productRepository.save(product);

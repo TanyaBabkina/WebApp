@@ -103,14 +103,10 @@ public class ProductController {
         System.out.println(name+"------------");
 
 
-
-
         model.addAttribute("list_values", list_values);
         model.addAttribute("model_name", joinedString);
         model.addAttribute("name", name);
 
-//        model.addAttribute("products", productService.EpochsOfModel(name));
-//        System.out.println(productService.EpochsOfModel(name).get(1).getE());
         return "testModel.html";
     }
 

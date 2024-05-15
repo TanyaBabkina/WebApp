@@ -20,17 +20,12 @@ public class GoogleChartsController {
     @GetMapping("/chart")
     public String showLineChart(Model model) {
 
-//        List<String> model_names = Arrays.asList("Model_1", "Model_2", "Model_3");
-//        List<Integer> yValues = Arrays.asList(10, 20, 15, 25, 30);
-//        System.out.println(xValues);
-//        model.addAttribute("xValues", xValues);
-//        model.addAttribute("yValues", yValues);
         List<String> list_of_models = productService.ModelNames();
 
         String joinedString = String.join(",", list_of_models);
         System.out.println(joinedString);
 
-        String model_names = "Model_1,Model_2,Model_3";
+
 
         List<List<Double>> list_values_mae = new ArrayList<>();
         for (String listOfModel : list_of_models) {
@@ -45,7 +40,7 @@ public class GoogleChartsController {
         }
         System.out.println(list_values_mae);
         int max_inner_list = list_values_mae.stream().mapToInt(List::size).max().getAsInt();
-//        System.out.println(list_values_mae.stream().mapToInt(List::size).max().getAsInt());
+
 
         // Сравнять количество элементов в списках
         for (List<Double> doubles : list_values_mae) {

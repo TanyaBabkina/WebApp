@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, String> {
 //    void findByTitle(String title);
-    void findByName(String name);
+//    void findByName(String name);
     @Query("SELECT DISTINCT m.name FROM Product m")
     List<String> findDistinctName();
 
