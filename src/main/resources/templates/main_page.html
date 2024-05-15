@@ -50,7 +50,6 @@
         var model_names = "[[${model_names}]]"
         var modelNameList = model_names.split(",");
         var modelDict = {};
-
         for (var i = 0; i < modelNameList.length; i++) {
 
             modelDict[modelNameList[i]] = "/testModel/".concat("", modelNameList[i]);
@@ -82,17 +81,17 @@
     Код поста: <label>
     <input type="number" name="post_code" value = "123456789"/>
 </label><br><br>
-    A: <label>
-    <input type="number" step="any" name="a" value="0.1"/>
+    Alpha: <label>
+    <input type="number"  name="alpha" step="any" value="1"/>
 </label><br><br>
     Batch: <label>
     <input type="number" name="batch" value="178"/>
 </label><br><br>
     Number of Epochs: <label>
-    <input type="number" name="epochs" value="8"/>
+    <input type="number" name="num_epochs" value="8"/>
 </label><br><br>
     HiddenSize: <label>
-    <input type="number" name="hiddenSize" value="20"/>
+    <input type="number" name="hidden_size" value="20"/>
 </label><br><br>
     <input type="submit" value="Отправить" />
 

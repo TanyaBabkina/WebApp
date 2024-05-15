@@ -1,5 +1,6 @@
 package com.example.WebApp.controllers;
 
+import com.example.WebApp.models.DataLearnModel;
 import com.example.WebApp.models.PredictData;
 import com.example.WebApp.models.Product;
 import com.example.WebApp.models.TestResult;
@@ -53,6 +54,8 @@ public class RestApiController {
         return jsonData;
     }
     //    @RequestParam(name = "name", required = false) String name, Model model
+
+    // отправка данных для получения прредсказания
     @PostMapping("/api/sendData")
     public static String SendData(@ModelAttribute String model_name,
                                   String date, double t_air, double atm_dav,
@@ -102,16 +105,65 @@ public class RestApiController {
                 rez = resp.getWaterLevel();
             }
         }
-//        InputStream content = (InputStream)conn.getInputStream();
-//        JSONTokener tokener = new JSONTokener(content.toString());
-//        JSONObject json = new JSONObject(tokener);
-//        rez = String.valueOf(json.getJSONObject("waterLevel"));
-//        System.out.println(rez);
 
 
         model.addAttribute("rez", rez);
         return "predict_rez";
     }
 
+    // отправка данных для обучения новой модели
+    @PostMapping("/api/sendLearningData")
+    public static String SendData1(@ModelAttribute String model_name,
+                                  int post_code, double alpha, int batch,
+                                  int num_epochs, int hidden_size, Model model ) throws IOException, URISyntaxException {
+//        System.out.println(alpha + " fgvgbnhm,.");
+        DataLearnModel learn_data = new DataLearnModel();
+        learn_data.setModel_name(model_name);
+        learn_data.setPost_code(post_code);
+        learn_data.setAlpha(alpha);
+        learn_data.setBatch(batch);
+        learn_data.setNum_epochs(num_epochs);
+        learn_data.setHidden_size(hidden_size);
 
+
+        System.out.println("cqadeqec");
+        // преобразование в json
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(learn_data);
+        ///////////////////////////////////////////////////////////////////////
+        URL url = new URL("http://localhost:8000/learn").toURI().toURL();
+        ///////////////////////////////////////////////////////////////////////
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setInstanceFollowRedirects(false);
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+        // Send request to an API
+        try (DataOutputStream dos = new DataOutputStream(conn.getOutputStream())) {
+            dos.writeBytes(requestBody);
+        }
+        double rez = 0.0;
+        System.out.println("Response code: " + conn.getResponseCode());
+
+
+
+
+//        // Read Response from and API
+        try (BufferedReader bf = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            String line;
+
+            while ((line = bf.readLine()) != null) {
+                System.out.println(line);
+                ObjectMapper mapper = new ObjectMapper();
+                TestResult resp = objectMapper.readValue(line, TestResult.class);
+                rez = resp.getWaterLevel();
+            }
+        }
+
+
+        model.addAttribute("rez", rez);
+        return "redirect:/";
+    }
 }
