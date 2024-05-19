@@ -1,0 +1,161 @@
+
+body {
+        font-family: "Roboto Mono", monospace;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-style: normal;
+        color: white;
+        text-align: center;
+        background-image: url('b.jpg');
+        background-size: cover;
+}
+.one {
+        font-style: normal;
+        font-size: xx-large;
+        border-right: 4px solid #000;
+}
+.two {
+        font-style: normal;
+        font-size: x-large;
+}
+
+.chart_container{
+        position:relative;
+}
+
+#linechart{
+        position:absolute !important;
+        top:50%;
+        left:60%;
+        transform:translate(-40%, -50%);
+        border-radius: 10px;
+        padding: 5px; /* Толщина рамки */
+        background: dodgerblue; /* Цвет рамки */
+}
+
+a {
+        text-decoration: none;
+        color: white;
+        text-decoration-color: white;
+}
+
+a:link{
+        text-decoration: none;
+        color: white;
+        text-decoration-color: white;
+}
+
+a:visited {
+        text-decoration: none;
+}
+a:hover {
+        text-decoration: none;
+        text-decoration-color: white;
+
+}
+a:active {
+        text-decoration: none;
+        color: white;
+}
+
+/*.image {*/
+/*        max-width: 3%;*/
+/*        float: left;*/
+/*        margin: 0;*/
+/*        border-radius: 50%;*/
+/*        padding: 5px; !* Толщина рамки *!*/
+/*        background: cadetblue; !* Цвет рамки *!*/
+/*}*/
+
+.image {
+        position: fixed;
+        top: 20px; /* Расстояние от верхнего края */
+        left: 20px; /* Расстояние от правого края */
+        width: 50px; /* Ширина изображения */
+        height: 50px; /* Высота изображения */
+        border-radius: 50%; /* Создание круглой рамки */
+        border: 2px solid #fff; /* Цвет и толщина границы */
+        overflow: hidden; /* Обрезаем изображение по границе */
+}
+
+img {
+        width: 100%; /* Заполнение всей ширины родительского элемента */
+        height: 100%; /* Заполнение всей высоты родительского элемента */
+        object-fit: cover; /* Масштабирование изображения для заполнения */
+}
+
+.buttons {
+        /* Форма кнопки */
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+
+        /* Цвет кнопки */
+        background-color: dodgerblue;
+        color: #FFFFFF;
+
+
+        /* Эффект при наведении */
+        transition: background-color 0.3s; /* Плавный переход при наведении */
+
+        /* Стиль текста */
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+}
+.buttons:hover {
+        background-color: #45a049;
+}
+#back_button{
+        position: fixed; /* Фиксированное позиционирование */
+        top: 20px; /* Расстояние от верхнего края */
+        left: 20px; /* Расстояние от левого края */
+        transition: background-color 0.3s; /* Плавный переход при наведении */
+}
+#back_button:hover {
+        background-color: #45a049;
+}
+form {
+        max-width: 400px;
+        margin: -5 auto;
+        padding: 20px;
+}
+
+.input_row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+}
+
+.input_column {
+        flex: 1;
+        margin-right: 20px;
+}
+
+.input_data {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+}
+
+.model {
+        list-style-type: none; /* Убираем маркеры списка */
+        margin: 10px 0; /* Внешние отступы сверху и снизу */
+}
+
+.model a {
+        display: inline-block; /* Делаем ссылку блочным элементом */
+        padding: 10px 20px; /* Внутренний отступ ссылки */
+        background-color: dodgerblue; /* Цвет фона ссылки */
+        color: white; /* Цвет текста ссылки */
+        text-decoration: none; /* Убираем подчеркивание ссылки */
+        border-radius: 5px; /* Скругление углов ссылки */
+        transition: background-color 0.3s; /* Плавный переход при наведении */
+}
+
+.model a:hover {
+        background-color: #45a049; /* Цвет фона при наведении */
+}

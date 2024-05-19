@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Danfo&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
             }
 
             var options = {
-                title: 'Line Chart of mae',
+                title: 'График метрик модели',
                 curveType: 'function',
                 legend: { position: 'bottom' }
             };
@@ -47,33 +47,82 @@
     </script>
 </head>
 <body>
+<button id="back_button" onclick="history.back()" class="buttons">Назад</button>
+
 <h1>MODEL [[${name}]]</h1>
 <hr>
 <div id="linechart" style="width: 500px; height: 300px;"></div>
-<p ALIGN=LEFT>Отправка данных для теста модели</p>
+<h2 ALIGN=LEFT>Отправка данных для теста модели:</h2>
+<!--<form action="/api/sendData" method="post" ALIGN=LEFT>-->
+<!--    Название модели: <label>-->
+<!--    <input type="text" name="model_name" th:value="${name}"/>-->
+<!--</label><br><br>-->
+<!--    Дата: <label>-->
+<!--    <input type="date" name="date" value = "2024-01-01"/>-->
+<!--</label><br><br>-->
+<!--    Температура воздуха: <label>-->
+<!--    <input type="number" name="t_air" value="-20"/>-->
+<!--</label><br><br>-->
+<!--    Атмосферное давление: <label>-->
+<!--    <input type="number" name="atm_dav" value="178"/>-->
+<!--</label><br><br>-->
+<!--    Скорость ветра: <label>-->
+<!--    <input type="number" name="wind" value="8"/>-->
+<!--</label><br><br>-->
+<!--    Толщина снежного покрова: <label>-->
+<!--    <input type="number" name="snow_level" value="20"/>-->
+<!--</label><br><br>-->
+<!--    Количество осадков: <label>-->
+<!--    <input type="number" name="rain" value="20"/>-->
+<!--</label><br><br>-->
+<!--    <input class="buttons" type="submit" value="Отправить" />-->
+<!--</form>-->
 <form action="/api/sendData" method="post" ALIGN=LEFT>
-    Название модели: <label>
-    <input type="text" name="model_name" th:value="${name}"/>
-</label><br><br>
-    Дата: <label>
-    <input type="date" name="date" value = "2024-01-01"/>
-</label><br><br>
-    Температура воздуха: <label>
-    <input type="number" name="t_air" value="-20"/>
-</label><br><br>
-    Атмосферное давление: <label>
-    <input type="number" name="atm_dav" value="178"/>
-</label><br><br>
-    Скорость ветра: <label>
-    <input type="number" name="wind" value="8"/>
-</label><br><br>
-    Толщина снежного покрова: <label>
-    <input type="number" name="snow_level" value="20"/>
-</label><br><br>
-    Количество осадков: <label>
-    <input type="number" name="rain" value="20"/>
-</label><br><br>
-    <input type="submit" value="Отправить" />
+    <div class="input_row">
+        <div class="input_column">
+            <label for="model_name">Название модели:</label>
+            <input class="input_data" type="text" id="model_name" name="model_name" th:value="${name}"/>
+        </div>
+        <div class="input_column">
+            <label for="date">Дата:</label>
+            <input class="input_data" type="date" id="date" name="date" value="2024-01-01"/>
+        </div>
+    </div>
+
+    <div class="input_row">
+        <div class="input_column">
+            <label for="t_air">Температура воздуха:</label>
+            <input class="input_data" type="number" id="t_air" name="t_air" value="-20"/>
+        </div>
+        <div class="input_column">
+            <label for="atm_dav">Атмосферное давление:</label>
+            <input class="input_data" type="number" id="atm_dav" name="atm_dav" value="178"/>
+        </div>
+    </div>
+
+    <div class="input_row">
+        <div class="input_column">
+            <label for="wind">Скорость движения ветра:</label>
+            <input class="input_data" type="number" id="wind" name="wind" value="8"/>
+        </div>
+        <div class="input_column">
+            <label for="snow_level">Толщина снежного покрова:</label>
+            <input class="input_data" type="number" id="snow_level" name="snow_level" value="20"/>
+        </div>
+    </div>
+
+    <div class="input_row">
+        <div class="input_column">
+            <label for="rain">Количество осадков:</label>
+            <input class="input_data" type="number" id="rain" name="rain" value="20"/>
+        </div>
+        <div class="input_column">
+            <!-- Пустая колонка для выравнивания кнопки -->
+        </div>
+    </div>
+
+    <input class="buttons" type="submit" value="Отправить" />
 </form>
+
 </body>
 </html>

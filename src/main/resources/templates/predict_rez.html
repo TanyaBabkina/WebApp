@@ -1,0 +1,71 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<link rel="stylesheet" th:href="@{/rez.css}">-->
+<!--<link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--<link href="https://fonts.googleapis.com/css2?family=Danfo&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">-->
+<!--<meta charset="UTF-8">-->
+<!--<body>-->
+
+<!--<h1>Model predict <b>[[${rez}]]</b></h1>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confetti Animation</title>
+    <link rel="stylesheet" th:href="@{/rez.css}">
+</head>
+<style>
+    #back_button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: dodgerblue;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #back_button:hover {
+        background-color: #45a049;
+    }
+</style>
+<body>
+<button id="back_button" onclick="history.back()" class="buttons" ALIGN="LEFT">Назад</button>
+<div class="container">
+    <h1 class="number" id="animatedNumber">123</h1>
+</div>
+
+<script>
+    const numberElement = document.getElementById('animatedNumber');
+    let number = [[${rez}]];
+
+    function updateNumber() {
+
+        numberElement.textContent = number;
+        createConfetti();
+    }
+
+    function createConfetti() {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+            confetti.remove();
+        }, 3000);
+    }
+
+    setInterval(updateNumber, 80); // Обновление числа и создание конфетти каждые 2 секунды
+</script>
+</body>
+</html>

@@ -65,7 +65,7 @@ public class ProductController {
         model.addAttribute("list_values", list_values_mae);
         model.addAttribute("model_name", joinedString);
 
-
+        System.out.println(joinedString+"-----------");
         model.addAttribute("model_names", joinedString);
         return "main_page.html";
     }
@@ -109,6 +109,8 @@ public class ProductController {
 
         return "testModel.html";
     }
+
+
 
 
 }

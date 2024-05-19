@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="styles.css">
+<!--    <link rel="stylesheet" href="styles.css">-->
+    <link rel="stylesheet" th:href="@{/styles.css}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Danfo&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Signika+Negative:wght@300..700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>MODEL</title>
+    <link rel="shortcut icon" href="9689519.jpg" type="image">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         var list_values = [[${list_values}]];
@@ -35,7 +37,7 @@
             }
 
             var options = {
-                title: 'Line Chart of mae',
+                title: 'График моделей по MAE',
                 curveType: 'function',
                 legend: {position: 'bottom'}
             };
@@ -46,59 +48,105 @@
     </script>
 </head>
 <body>
-    <script>
-        var model_names = "[[${model_names}]]"
-        var modelNameList = model_names.split(",");
-        var modelDict = {};
-        for (var i = 0; i < modelNameList.length; i++) {
+<div>
+        <img class="image" src="9689519.jpg">
+</div>
 
-            modelDict[modelNameList[i]] = "/testModel/".concat("", modelNameList[i]);
+<h1>Главная страница</h1>
+<hr>
+<h2 class="pageHeader" ALIGN=LEFT>Модели:</h2>
+<div id="productList" ALIGN=LEFT></div>
+<h3 class="pageHeader" ALIGN=LEFT>Отправка данных для обучения модели:</h3>
+<form action="/api/sendLearningData" method="post" ALIGN=LEFT>
+    <div class="input_row">
+        <div class="input_column">
+            <label for="model_name">Название модели:</label>
+            <input class="input_data" type="text" id="model_name" name="model_name" />
+        </div>
+        <div class="input_column">
+            <label for="post_code">Код поста:</label>
+            <input class="input_data" type="number" id="post_code" name="post_code" value="123456789"/>
+        </div>
+    </div>
+
+    <div class="input_row">
+        <div class="input_column">
+            <label for="alpha">Alpha:</label>
+            <input class="input_data" type="number" id="alpha" name="alpha" step="any" value="1"/>
+        </div>
+        <div class="input_column">
+            <label for="batch">Batch:</label>
+            <input class="input_data" type="number" id="batch" name="batch" value="178"/>
+        </div>
+    </div>
+
+    <div class="input_row">
+        <div class="input_column">
+            <label for="num_epochs">Number of Epochs:</label>
+            <input class="input_data" type="number" id="num_epochs" name="num_epochs" value="8"/>
+        </div>
+        <div class="input_column">
+            <label for="hidden_size">HiddenSize:</label>
+            <input class="input_data" type="number" id="hidden_size" name="hidden_size" value="20"/>
+        </div>
+    </div>
+
+    <input class="buttons" type="submit" value="Отправить" />
+</form>
+<!--<form action="/api/sendLearningData" method="post" ALIGN=LEFT>-->
+<!--    Название модели: <label>-->
+<!--    <input class = "input_data" type="text" name="model_name" />-->
+<!--</label><br><br>-->
+<!--    Код поста: <label>-->
+<!--    <input class = "input_data" type="number" name="post_code" value = "123456789"/>-->
+<!--</label><br><br>-->
+<!--    Alpha: <label>-->
+<!--    <input class = "input_data" type="number"  name="alpha" step="any" value="1"/>-->
+<!--</label><br><br>-->
+<!--    Batch: <label>-->
+<!--    <input class = "input_data" type="number" name="batch" value="178"/>-->
+<!--</label><br><br>-->
+<!--    Number of Epochs: <label>-->
+<!--    <input class = "input_data" type="number" name="num_epochs" value="8"/>-->
+<!--</label><br><br>-->
+<!--    HiddenSize: <label>-->
+<!--    <input class = "input_data" type="number" name="hidden_size" value="20"/>-->
+<!--</label><br><br>-->
+<!--    <input class = 'buttons' type="submit" value="Отправить" />-->
+
+<!--</form>-->
+
+<script>
+    var model_names = "[[${model_names}]]";
+    var modelNameList = model_names.split(",");
+    var modelDict = {};
+
+    for (var i = 0; i < modelNameList.length; i++) {
+        modelDict[modelNameList[i]] = "/testModel/" + modelNameList[i];
     }
 
-    // assume products is an array of objects with 'name' and 'url' properties
     function displayProducts(modelDict) {
-        const productList = document.getElementById('product-list');
-        for (let key in modelDict) {
-            const listItem = document.createElement('li');
-            const link = document.createElement('a');
-            link.href = `${modelDict[key]}`;
-            link.textContent = `${key}`;
-            listItem.appendChild(link);
-            productList.appendChild(listItem);
+        const productList = document.getElementById('productList');
+
+        if (productList) {
+            for (let key in modelDict) {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = modelDict[key];
+                listItem.className = 'model';
+                link.textContent = key;
+                listItem.appendChild(link);
+                productList.appendChild(listItem);
+            }
+        } else {
+            console.error('Элемент с id "productList" не найден в DOM.');
         }
     }
 
     displayProducts(modelDict);
-
 </script>
-<h1>Product List</h1>
-<hr>
-<p ALIGN=LEFT>Отправка данных для обучения модели</p>
-<form action="/api/sendLearningData" method="post" ALIGN=LEFT>
-    Название модели: <label>
-    <input type="text" name="model_name" />
-</label><br><br>
-    Код поста: <label>
-    <input type="number" name="post_code" value = "123456789"/>
-</label><br><br>
-    Alpha: <label>
-    <input type="number"  name="alpha" step="any" value="1"/>
-</label><br><br>
-    Batch: <label>
-    <input type="number" name="batch" value="178"/>
-</label><br><br>
-    Number of Epochs: <label>
-    <input type="number" name="num_epochs" value="8"/>
-</label><br><br>
-    HiddenSize: <label>
-    <input type="number" name="hidden_size" value="20"/>
-</label><br><br>
-    <input type="submit" value="Отправить" />
+<div id="linechart" style="width: 500px; height: 300px;"></div>
 
-</form>
-    <div class="tenor-gif-embed" data-postid="27526592" data-share-method="host" data-aspect-ratio="1" data-width="20%"><a href="https://tenor.com/view/maxwell-gif-27526592">Maxwell Sticker</a>from <a href="https://tenor.com/search/maxwell-stickers">Maxwell Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-<div id="linechart" style="width: 900px; height: 500px;"></div>
-<ol id="product-list"></ol>
-</div>
+
 </body>
 </html>
